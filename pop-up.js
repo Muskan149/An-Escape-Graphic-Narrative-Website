@@ -8,8 +8,8 @@ let isPlaying = false;
 const popup = document.querySelector('.popup-overlay');
 const popupSlides = document.querySelector('.popup-slides');
 let currentPopupSlide = 0;
-const totalPopupSlides = document.querySelectorAll('.popup-slide').length;
-// Add this at the start of your script
+let totalPopupSlides = 0;  // Declare this variable here
+
 const popupConfig = {
     1: {  // Page 1
         clickArea: {
