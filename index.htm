@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fullscreen Gallery</title>
+    <title>An Escape</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -64,7 +65,7 @@
             background: rgba(0, 0, 0, 0.7);
         }
 
-        .audio-button {
+        /* .audio-button {
             width: 12px;
             height: 12px;
             background: black;
@@ -89,6 +90,82 @@
 
         .audio-button.bottom {
             top: 75%;
+        } */
+
+        /* .audio-text {
+            position: absolute;
+            bottom: 10%;
+            right: 10%;
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .audio-control {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .audio-control i {
+            font-size: 20px;
+            color: #666;
+            transition: color 0.3s ease;
+        }
+
+        .audio-control.playing i {
+            color: #ff4444;
+        }
+
+        .audio-control:hover i {
+            color: #444;
+        } */
+
+        .audio-icon-title {
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            z-index: 1000;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .audio-icon-pages {
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .audio-control-new {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.5);
+            transition: background-color 0.3s ease;
+        }
+
+        .audio-control-new i {
+            font-size: 24px;
+            color: white;
+            transition: color 0.3s ease;
+        }
+
+        .audio-control-new:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .audio-control-new.playing i {
+            color: #ff4444;
         }
 
         .arrow {
@@ -112,43 +189,48 @@
         <div class="page">
             <img src="Assets/title page.png" alt="Page 0">
         </div>
+            <!-- <div class="audio-text">
+                click here to start audio
+                <button class="audio-control" onclick="toggleAudio()">
+                    <i class="fa-solid fa-volume-off"></i>
+                </button>
+            </div> -->
         <div class="page">
             <img src="Assets/page1.png" alt="Page 1">
-            <!-- <div class="audio-button top" onclick="playAudio('verse 1')"></div>
-            <div class="audio-button middle" onclick="playAudio('audio2')"></div>
-            <div class="audio-button bottom" onclick="playAudio('audio3')"></div> -->
         </div>
         <div class="page">
-            <img src="Assets/page2.png" alt="Page 1">
-            <!-- <div class="audio-button top" onclick="playAudio('verse 1')"></div>
-            <div class="audio-button middle" onclick="playAudio('audio2')"></div>
-            <div class="audio-button bottom" onclick="playAudio('audio3')"></div>         -->
+            <img src="Assets/page2.png" alt="Page 1">      
         </div>
         <div class="page">
             <img src="Assets/page3.png" alt="Page 1">
-            <!-- <div class="audio-button top" onclick="playAudio('verse 1')"></div>
-            <div class="audio-button middle" onclick="playAudio('audio2')"></div>
-            <div class="audio-button bottom" onclick="playAudio('audio3')"></div> -->
         </div>
         <div class="page">
             <img src="Assets/page4.png" alt="Page 1">
-            <!-- <div class="audio-button top" onclick="playAudio('verse 1')"></div>
-            <div class="audio-button middle" onclick="playAudio('audio2')"></div>
-            <div class="audio-button bottom" onclick="playAudio('audio3')"></div> -->
         </div>
         <div class="page">
             <img src="Assets/page5.png" alt="Page 1">
-            <!-- <div class="audio-button top" onclick="playAudio('verse 1')"></div>
-            <div class="audio-button middle" onclick="playAudio('audio2')"></div>
-            <div class="audio-button bottom" onclick="playAudio('audio3')"></div> -->
         </div>
         <div class="page">
             <img src="Assets/page6.png" alt="Page 6">
-            <!-- <div class="audio-button top" onclick="playAudio('verse 1')"></div>
-            <div class="audio-button middle" onclick="playAudio('audio2')"></div>
-            <div class="audio-button bottom" onclick="playAudio('audio3')"></div> -->
         </div>
     </div>
+
+    <div class="audio-icon-title">
+        <button class="audio-control-new" onclick="startAudio()">
+            <i class="fas fa-volume-up"></i>
+        </button>
+    </div>
+
+    <div class="audio-icon-pages">
+        <button class="audio-control-new" onclick="toggleAudio()">
+            <i class="fas fa-play"></i>
+        </button>
+    </div>
+
+    <!-- Audio element -->
+    <audio id="background-audio" loop>
+        <source src="Assets/audios/main-verse.m4a" type="audio/mpeg">
+    </audio>
 
     <div class="nav-buttons">
         <button onclick="navigate(-1)"><i class="arrow up"></i></button>
@@ -159,10 +241,51 @@
         let currentPage = 0;
         const gallery = document.querySelector('.gallery');
         const totalPages = document.querySelectorAll('.page').length;
+        const audio = document.getElementById('background-audio');
+        const titleAudioIcon = document.querySelector('.audio-icon-title');
+        const pagesAudioIcon = document.querySelector('.audio-icon-pages');
+        let isPlaying = false;
+
+        function startAudio() {
+            audio.play();
+            isPlaying = true;
+            titleAudioIcon.style.opacity = '0';
+            pagesAudioIcon.style.opacity = '1';
+            updatePlayPauseIcon();
+        }
+
+        function toggleAudio() {
+            if (isPlaying) {
+                audio.pause();
+                pagesAudioIcon.querySelector('i').classList.remove('fa-pause');
+                pagesAudioIcon.querySelector('i').classList.add('fa-play');
+            } else {
+                audio.play();
+                pagesAudioIcon.querySelector('i').classList.remove('fa-play');
+                pagesAudioIcon.querySelector('i').classList.add('fa-pause');
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function updatePlayPauseIcon() {
+            const icon = pagesAudioIcon.querySelector('i');
+            icon.classList.remove('fa-play', 'fa-pause');
+            icon.classList.add(isPlaying ? 'fa-pause' : 'fa-play');
+        }
+
 
         function navigate(direction) {
             currentPage = Math.max(0, Math.min(currentPage + direction, totalPages - 1));
             gallery.style.transform = `translateY(-${currentPage * 100}vh)`;
+            
+            // Show/hide appropriate audio controls based on page
+            if (currentPage === 0) {
+                titleAudioIcon.style.opacity = '1';
+                pagesAudioIcon.style.opacity = '0';
+            } else {
+                titleAudioIcon.style.opacity = '0';
+                pagesAudioIcon.style.opacity = '1';
+            }
         }
 
         // Keyboard navigation
@@ -170,21 +293,6 @@
             if (e.key === 'ArrowUp') navigate(-1);
             if (e.key === 'ArrowDown') navigate(1);
         });
-
-        function playAudio(audioId) {
-            alert("audio played " + audioId)
-            const audio = document.getElementById(audioId);
-            // Stop all other audio first
-            document.querySelectorAll('audio').forEach(a => {
-                if (a.id !== audioId) {
-                    a.pause();
-                    a.currentTime = 0;
-                }
-            });
-            // Play the selected audio
-            audio.currentTime = 0;
-            audio.play();
-        }
 
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
