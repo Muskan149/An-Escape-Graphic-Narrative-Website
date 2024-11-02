@@ -216,6 +216,26 @@
         </div>
     </div>
 
+    <div class="popup-overlay">
+        <div class="popup-content">
+            <button class="popup-close">&times;</button>
+            <div class="popup-carousel">
+                <div class="popup-slides">
+                    <div class="popup-slide">
+                        <img src="/api/placeholder/800/400" alt="Placeholder 1">
+                    </div>
+                    <div class="popup-slide">
+                        <img src="/api/placeholder/800/400" alt="Placeholder 2">
+                    </div>
+                </div>
+            </div>
+            <div class="popup-nav">
+                <button onclick="navigatePopup(-1)"><i class="arrow up"></i></button>
+                <button onclick="navigatePopup(1)"><i class="arrow down"></i></button>            
+            </div>
+        </div>
+    </div>
+
     <div class="audio-icon-title">
         <button class="audio-control-new" onclick="startAudio()">
             <i class="fas fa-volume-up"></i>
@@ -237,129 +257,6 @@
         <button onclick="navigate(-1)"><i class="arrow up"></i></button>
         <button onclick="navigate(1)"><i class="arrow down"></i></button>
     </div>
-
-    <script>
-        let currentPage = 0;
-        const gallery = document.querySelector('.gallery');
-        const totalPages = document.querySelectorAll('.page').length;
-        const audio = document.getElementById('background-audio');
-        const titleAudioIcon = document.querySelector('.audio-icon-title');
-        const pagesAudioIcon = document.querySelector('.audio-icon-pages');
-        let isPlaying = false;
-
-        // Add these variables at the top with your other variables
-        const popup = document.querySelector('.popup-overlay');
-        const popupSlides = document.querySelector('.popup-slides');
-        let currentPopupSlide = 0;
-        const totalPopupSlides = document.querySelectorAll('.popup-slide').length;
-
-        // Add click handler to the red human figure
-        document.addEventListener('DOMContentLoaded', function() {
-            const page1 = document.querySelectorAll('.page')[1]; // Select the first page
-            const redHuman = page1.querySelector('img'); // This will target the image
-            
-            redHuman.addEventListener('click', function(e) {
-                // Get the coordinates of the click relative to the image
-                const rect = redHuman.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                // Check if click is in the area of the red human (adjust these values as needed)
-                if (x > 0 && x < (rect.width/2) && y > 0 && y < (rect.height/2)) {
-                    alert("popped")
-                    openPopup();
-                }else {
-                    alert("nahh")
-                }
-            });
-        });
-
-        function openPopup() {
-            popup.style.display = 'flex';
-            if (audio && isPlaying) {
-                audio.pause();
-                updatePlayPauseIcon();
-            }
-        }
-
-        function closePopup() {
-            popup.style.display = 'none';
-            currentPopupSlide = 0;
-            updatePopupSlides();
-        }
-
-        function navigatePopup(direction) {
-            currentPopupSlide = Math.max(0, Math.min(currentPopupSlide + direction, totalPopupSlides - 1));
-            updatePopupSlides();
-        }
-
-        function updatePopupSlides() {
-            popupSlides.style.transform = `translateX(-${currentPopupSlide * 100}%)`;
-        }
-
-        // Add click event for close button
-        document.querySelector('.popup-close').addEventListener('click', closePopup);
-
-        // Close popup when clicking outside
-        popup.addEventListener('click', function(e) {
-            if (e.target === popup) {
-                closePopup();
-            }
-        });
-
-        function startAudio() {
-            audio.play();
-            isPlaying = true;
-            titleAudioIcon.style.opacity = '0';
-            pagesAudioIcon.style.opacity = '1';
-            updatePlayPauseIcon();
-        }
-
-        function toggleAudio() {
-            if (isPlaying) {
-                audio.pause();
-                pagesAudioIcon.querySelector('i').classList.remove('fa-pause');
-                pagesAudioIcon.querySelector('i').classList.add('fa-play');
-            } else {
-                audio.play();
-                pagesAudioIcon.querySelector('i').classList.remove('fa-play');
-                pagesAudioIcon.querySelector('i').classList.add('fa-pause');
-            }
-            isPlaying = !isPlaying;
-        }
-
-        function updatePlayPauseIcon() {
-            const icon = pagesAudioIcon.querySelector('i');
-            icon.classList.remove('fa-play', 'fa-pause');
-            icon.classList.add(isPlaying ? 'fa-pause' : 'fa-play');
-        }
-
-
-        function navigate(direction) {
-            currentPage = Math.max(0, Math.min(currentPage + direction, totalPages - 1));
-            gallery.style.transform = `translateY(-${currentPage * 100}vh)`;
-            
-            // Show/hide appropriate audio controls based on page
-            if (currentPage === 0) {
-                titleAudioIcon.style.opacity = '1';
-                pagesAudioIcon.style.opacity = '0';
-            } else {
-                titleAudioIcon.style.opacity = '0';
-                pagesAudioIcon.style.opacity = '1';
-            }
-        }
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowUp') navigate(-1);
-            if (e.key === 'ArrowDown') navigate(1);
-        });
-
-        // Keyboard navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowUp') navigate(-1);
-            if (e.key === 'ArrowDown') navigate(1);
-        });
-    </script>
+    <script src="pop-up.js"></script>
 </body>
 </html>
