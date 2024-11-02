@@ -61,8 +61,8 @@ const popupConfig = {
             y2: 1
         },
         images: [
-            "/api/placeholder/800/400?text=Page6-Image1",
-            "/api/placeholder/800/400?text=Page6-Image2"
+            "Assets/ss-4/miguel1 (1).png",
+            "Assets/ss-4/miguel2 (2).png"
         ]
     }
 };
