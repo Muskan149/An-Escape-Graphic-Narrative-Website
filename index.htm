@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>An Escape</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="pop-up-styles.css">    
     <style>
         * {
             margin: 0;
@@ -128,7 +129,7 @@
 
         .audio-icon-title {
             position: fixed;
-            left: 20px;
+            left: 49%;
             bottom: 20px;
             z-index: 1000;
             opacity: 1;
@@ -245,6 +246,66 @@
         const titleAudioIcon = document.querySelector('.audio-icon-title');
         const pagesAudioIcon = document.querySelector('.audio-icon-pages');
         let isPlaying = false;
+
+        // Add these variables at the top with your other variables
+        const popup = document.querySelector('.popup-overlay');
+        const popupSlides = document.querySelector('.popup-slides');
+        let currentPopupSlide = 0;
+        const totalPopupSlides = document.querySelectorAll('.popup-slide').length;
+
+        // Add click handler to the red human figure
+        document.addEventListener('DOMContentLoaded', function() {
+            const page1 = document.querySelectorAll('.page')[1]; // Select the first page
+            const redHuman = page1.querySelector('img'); // This will target the image
+            
+            redHuman.addEventListener('click', function(e) {
+                // Get the coordinates of the click relative to the image
+                const rect = redHuman.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                // Check if click is in the area of the red human (adjust these values as needed)
+                if (x > 0 && x < (rect.width/2) && y > 0 && y < (rect.height/2)) {
+                    alert("popped")
+                    openPopup();
+                }else {
+                    alert("nahh")
+                }
+            });
+        });
+
+        function openPopup() {
+            popup.style.display = 'flex';
+            if (audio && isPlaying) {
+                audio.pause();
+                updatePlayPauseIcon();
+            }
+        }
+
+        function closePopup() {
+            popup.style.display = 'none';
+            currentPopupSlide = 0;
+            updatePopupSlides();
+        }
+
+        function navigatePopup(direction) {
+            currentPopupSlide = Math.max(0, Math.min(currentPopupSlide + direction, totalPopupSlides - 1));
+            updatePopupSlides();
+        }
+
+        function updatePopupSlides() {
+            popupSlides.style.transform = `translateX(-${currentPopupSlide * 100}%)`;
+        }
+
+        // Add click event for close button
+        document.querySelector('.popup-close').addEventListener('click', closePopup);
+
+        // Close popup when clicking outside
+        popup.addEventListener('click', function(e) {
+            if (e.target === popup) {
+                closePopup();
+            }
+        });
 
         function startAudio() {
             audio.play();
