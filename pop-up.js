@@ -55,10 +55,10 @@ const popupConfig = {
     },
     6: {
         clickArea: {
-            x1: 0.3,
-            x2: 0.7,
-            y1: 0.2,
-            y2: 0.5
+            x1: 0.5,
+            x2: 1,
+            y1: 0.5,
+            y2: 1
         },
         images: [
             "/api/placeholder/800/400?text=Page6-Image1",
@@ -154,7 +154,7 @@ function closePopup() {
         isPlaying = true;
         updatePlayPauseIcon();
     }
-    
+
     // Remove dots when closing
     const dotsContainer = document.querySelector('.popup-dots');
     if (dotsContainer) {
