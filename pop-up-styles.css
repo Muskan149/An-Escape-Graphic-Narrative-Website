@@ -59,32 +59,42 @@
     object-fit: cover;
 }
 
+/* Update in pop-up-styles.css */
 .popup-nav {
     position: absolute;
-    bottom: 20px;
     left: 50%;
+    bottom: 20px;
     transform: translateX(-50%);
     display: flex;
     gap: 10px;
+    z-index: 2100;  /* Make sure it's above the slides */
 }
 
+/* Optional: If you want to make the buttons more visible against any background */
 .popup-nav button {
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    padding: 5px 15px;
-    border-radius: 4px;
-    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.7);  /* Slightly darker background */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
 }
 
-/* Add to pop-up-styles.css */
+.popup-nav button:hover {
+    background: rgba(0, 0, 0, 0.9);
+}
+
+/* Move dots above the navigation buttons */
 .popup-dots {
     position: absolute;
     left: 50%;
-    bottom: 20px;
+    bottom: 80px;  /* Increased to be above the nav buttons */
     transform: translateX(-50%);
     display: flex;
     gap: 8px;
+    z-index: 2100;
 }
 
 .popup-dot {
